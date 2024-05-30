@@ -1,7 +1,9 @@
 /** Core */
 import { ClerkLoaded, ClerkLoading, SignUp } from '@clerk/nextjs';
-import { Loader2 } from 'lucide-react';
-import Image from 'next/image';
+
+/** Components */
+import { LoadSpin } from '@/components/ui/load-spin';
+import { LogoImage } from '@/components/ui/logo-image';
 
 export default function SignUpPage() {
   return (
@@ -23,13 +25,13 @@ export default function SignUpPage() {
           </ClerkLoaded>
 
           <ClerkLoading>
-            <Loader2 className="animate-spin text-muted-foreground" />
+            <LoadSpin className="text-muted-foreground" />
           </ClerkLoading>
         </div>
       </div>
 
       <div className="hidden h-full items-center justify-center bg-blue-600 lg:flex">
-        <Image src="/logo.svg" width={100} height={100} alt="Logo" />
+        <LogoImage width={100} height={100} />
       </div>
     </div>
   );
