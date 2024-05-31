@@ -5,6 +5,10 @@ import { ReactNode } from 'react';
 
 /** Providers */
 import { QueryProvider } from '@/providers/query';
+import { SheetProvider } from '@/providers/sheet';
+
+/** Components */
+import { Toaster } from '@/components/ui/sonner';
 
 /** Styles */
 import { Inter } from 'next/font/google';
@@ -25,6 +29,10 @@ export default function RootLayout({ children }: Readonly<{
       <html lang="en">
         <body className={inter.className}>
           <QueryProvider>
+            <SheetProvider />
+
+            <Toaster />
+
             {children}
           </QueryProvider>
         </body>

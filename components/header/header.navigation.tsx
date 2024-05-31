@@ -12,7 +12,7 @@ import { Button } from '../ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
 
 /** Configs */
-import { ROUTES } from '@/config/routes';
+import { ROUTES } from '@/config/navigation-routes';
 
 export function HeaderNavigation() {
   const [isOpen, setIsOpen] = useState(false);
