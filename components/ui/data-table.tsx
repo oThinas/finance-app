@@ -13,6 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { Trash } from 'lucide-react';
 import { useState } from 'react';
 
 /** Components */
@@ -27,15 +28,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-
-/** Interfaces */
-import { Payment } from '@/app/(dashboard)/accounts/columns';
-import { Trash } from 'lucide-react';
+import { useConfirmDialog } from '@/hooks/use-confirm-dialog';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  filterKey: keyof Omit<Payment, 'id'>;
+  filterKey: string;
   onDelete(row: Row<TData>[]): void;
   disabled?: boolean;
 }
@@ -50,6 +48,11 @@ export function DataTable<TData, TValue>({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState({});
+
+  const [ConfirmationDialog, confirm] = useConfirmDialog({
+    title: 'Are you sure?',
+    message: 'You are about to perform a bulk delete',
+  });
 
   const table = useReactTable({
     data,
@@ -68,8 +71,18 @@ export function DataTable<TData, TValue>({
     },
   });
 
+  async function handleDelete() {
+    const ok = await confirm();
+    if (ok) {
+      onDelete(table.getFilteredSelectedRowModel().rows);
+      table.resetRowSelection();
+    }
+  }
+
   return (
     <div>
+      <ConfirmationDialog />
+
       <div className="flex items-center py-4">
         <Input
           placeholder={`Filter ${filterKey}...`}
@@ -80,7 +93,10 @@ export function DataTable<TData, TValue>({
         />
 
         {table.getFilteredSelectedRowModel().rows.length > 0 && (
-          <Button size="sm" variant="outline" className="ml-auto text-sm font-normal" disabled={disabled}>
+          <Button
+            size="sm" variant="outline" className="ml-auto text-sm font-normal" disabled={disabled}
+            onClick={handleDelete}
+          >
             <Trash className="mr-2 size-4" />
 
             Delete ({table.getFilteredSelectedRowModel().rows.length})

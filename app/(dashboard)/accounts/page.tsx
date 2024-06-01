@@ -7,52 +7,72 @@ import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DataTable } from '@/components/ui/data-table';
+import { LoadSpin } from '@/components/ui/load-spin';
+import { Skeleton } from '@/components/ui/skeleton';
 
 /** Hooks */
+import { useBulkDeleteAccounts } from '@/hooks/accounts/api/use-bulk-delete-accounts';
+import { useGetAccounts } from '@/hooks/accounts/api/use-get-accounts';
 import { useNewAccountSheet } from '@/hooks/accounts/use-new-account-sheet';
 
 /** Configs */
-import { Payment, columns } from './columns';
-
-const data: Payment[] = [
-  {
-    id: '728ed52f',
-    amount: 100,
-    status: 'pending',
-    email: 'm@example.com',
-  },
-  {
-    id: '728ed52f',
-    amount: 100,
-    status: 'pending',
-    email: 'a@example.com',
-  },
-];
+import { accountColumns } from '@/config/account-columns';
+import { Row } from '@tanstack/react-table';
 
 export default function AccountsPage() {
   const newAccount = useNewAccountSheet();
 
+  const deleteAccountsQuery = useBulkDeleteAccounts();
+  const getAccountsQuery = useGetAccounts();
+
+  const accounts = getAccountsQuery.data || [];
+  const isDisabled = getAccountsQuery.isLoading || deleteAccountsQuery.isPending;
+
   function handleNewAccount() {
     newAccount.onOpen();
+  }
+
+  function handleDeleteAccounts(rows: Row<{ id: string; name: string }>[]) {
+    const ids = rows.map((row) => row.original.id);
+    deleteAccountsQuery.mutate({ ids });
   }
 
   return (
     <div className="mx-auto -mt-24 w-full max-w-screen-2xl pb-10">
       <Card className="border-none drop-shadow-sm">
         <CardHeader className="gap-y-2 lg:flex-row lg:items-center lg:justify-between">
-          <CardTitle className="line-clamp-1 text-xl">
-            Accounts Page
-          </CardTitle>
+          {getAccountsQuery.isLoading ? (
+            <>
+              <Skeleton className="h-8 w-48 bg-slate-300" />
 
-          <Button size="sm" onClick={handleNewAccount}>
-            <Plus className="mr-2 size-4" />
+              <Skeleton className="h-8 w-24 bg-slate-300" />
+            </>
+          ) : (
+            <>
+              <CardTitle className="line-clamp-1 text-xl">
+                Accounts Page
+              </CardTitle>
 
-            Add new
-          </Button>
+              <Button size="sm" onClick={handleNewAccount}>
+                <Plus className="mr-2 size-4" />
+
+                Add new
+              </Button>
+            </>
+          )}
         </CardHeader>
 
         <CardContent>
-          <DataTable columns={columns} data={data} filterKey="email" onDelete={() => { }} disabled={false} />
+          {getAccountsQuery.isLoading ? (
+            <div className="flex h-[500px] w-full items-center justify-center">
+              <LoadSpin className="size-8 text-slate-300" />
+            </div>
+          ) : (
+            <DataTable
+              columns={accountColumns} data={accounts} filterKey="email" disabled={isDisabled}
+              onDelete={(rows) => handleDeleteAccounts(rows)}
+            />
+          )}
         </CardContent>
       </Card>
     </div>
