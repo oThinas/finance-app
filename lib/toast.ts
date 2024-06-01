@@ -5,32 +5,32 @@ import { toast as toastPrimitive } from 'sonner';
 /** Libs */
 import { dismissButton } from './utils';
 
-function standard(message: ReactNode, id?: string) {
-  toastPrimitive(message, { id, ...dismissButton() });
+function standard(message: ReactNode, id?: string | number) {
+  return toastPrimitive(message, { id, ...dismissButton() });
 }
 
-function success(message: ReactNode, id?: string) {
-  toastPrimitive.success(message, { id, ...dismissButton() });
+function success(message: ReactNode, id?: string | number) {
+  return toastPrimitive.success(message, { id, ...dismissButton() });
 }
 
-function error(message: ReactNode, id?: string) {
-  toastPrimitive.error(message, { id, ...dismissButton() });
+function error(message: ReactNode, id?: string | number) {
+  return toastPrimitive.error(message, { id, ...dismissButton() });
 }
 
-function description(message: ReactNode, description: ReactNode, id?: string) {
-  toastPrimitive.message(message, { description, id, ...dismissButton() });
+function description(message: ReactNode, description: ReactNode, id?: string | number) {
+  return toastPrimitive.message(message, { description, id, ...dismissButton() });
 }
 
-function info(message: ReactNode, id?: string) {
-  toastPrimitive.info(message, { id, ...dismissButton() });
+function info(message: ReactNode, id?: string | number) {
+  return toastPrimitive.info(message, { id, ...dismissButton() });
 }
 
-function warning(message: ReactNode, id?: string) {
-  toastPrimitive.warning(message, { id, ...dismissButton() });
+function warning(message: ReactNode, id?: string | number) {
+  return toastPrimitive.warning(message, { id, ...dismissButton() });
 }
 
-function loading(message: ReactNode, id: string) {
-  toastPrimitive.loading(message, { id });
+function loading(message: ReactNode, id?: string | number) {
+  return toastPrimitive.loading(message, { id });
 }
 
 export const toast = {
