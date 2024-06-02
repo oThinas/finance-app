@@ -30,7 +30,11 @@ function warning(message: ReactNode, id?: string | number) {
 }
 
 function loading(message: ReactNode, id?: string | number) {
-  return toastPrimitive.loading(message, { id });
+  return toastPrimitive.loading(message, { id, ...dismissButton() });
+}
+
+function dismiss(id: string | number) {
+  return toastPrimitive.dismiss(id);
 }
 
 export const toast = {
@@ -41,4 +45,5 @@ export const toast = {
   info,
   warning,
   loading,
+  dismiss,
 };

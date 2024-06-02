@@ -13,18 +13,19 @@ export function useBulkDeleteAccounts() {
   const queryClient = useQueryClient();
   const mutatation = useMutation<ResponseType, Error, RequestType>({
     async mutationFn(json) {
+      toast.loading('Deleting accounts...', 'bulk-delete-accounts');
       const response = await client.api.accounts['bulk-delete'].$post({ json });
       const data = await response.json();
 
       return data;
     },
     onSuccess() {
-      toast.success('Accounts deleted');
+      toast.success('Accounts deleted', 'bulk-delete-accounts');
       queryClient.invalidateQueries({ queryKey: ['accounts'] });
       // TODO: invalidate summary query
     },
     onError() {
-      toast.error('Failed to delete accounts');
+      toast.error('Failed to delete accounts', 'bulk-delete-accounts');
     },
   });
 
