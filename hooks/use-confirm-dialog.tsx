@@ -6,11 +6,14 @@ import { useState } from 'react';
 /** Components */
 
 interface ConfirmDialogProps {
-  title: string;
   message: string;
+  title?: string;
 }
 
-export function useConfirmDialog(props: ConfirmDialogProps): [() => JSX.Element, () => Promise<unknown>] {
+export function useConfirmDialog({
+  title = 'Are you sure?',
+  ...props
+}: ConfirmDialogProps): [() => JSX.Element, () => Promise<unknown>] {
   const [promise, setPromise] = useState<{ resolve(value: boolean): void } | null>(null);
 
   function confirm() {
@@ -39,7 +42,7 @@ export function useConfirmDialog(props: ConfirmDialogProps): [() => JSX.Element,
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              {props.title}
+              {title}
             </DialogTitle>
 
             <DialogDescription>

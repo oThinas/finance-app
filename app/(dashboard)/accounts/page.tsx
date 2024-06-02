@@ -43,9 +43,9 @@ export default function AccountsPage() {
         <CardHeader className="gap-y-2 lg:flex-row lg:items-center lg:justify-between">
           {getAccountsQuery.isLoading ? (
             <>
-              <Skeleton className="h-8 w-48 bg-slate-300" />
+              <Skeleton className="h-8 w-48" />
 
-              <Skeleton className="h-8 w-24 bg-slate-300" />
+              <Skeleton className="h-8 w-24" />
             </>
           ) : (
             <>

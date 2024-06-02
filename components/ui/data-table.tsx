@@ -49,10 +49,7 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState({});
 
-  const [ConfirmationDialog, confirm] = useConfirmDialog({
-    title: 'Are you sure?',
-    message: 'You are about to perform a bulk delete',
-  });
+  const [ConfirmationDialog, confirm] = useConfirmDialog({ message: 'You are about to perform a bulk delete' });
 
   const table = useReactTable({
     data,

@@ -1,3 +1,4 @@
+/** Core */
 import { create } from 'zustand';
 
 interface NewAccountSheetState {
@@ -8,6 +9,10 @@ interface NewAccountSheetState {
 
 export const useNewAccountSheet = create<NewAccountSheetState>((set) => ({
   isOpen: false,
-  onOpen: () => set({ isOpen: true }),
-  onClose: () => set({ isOpen: false }),
+  onOpen() {
+    set({ isOpen: true });
+  },
+  onClose() {
+    set({ isOpen: false });
+  },
 }));
