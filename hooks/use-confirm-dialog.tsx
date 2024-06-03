@@ -1,9 +1,9 @@
 /** Core */
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useState } from 'react';
 
 /** Components */
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 interface ConfirmDialogProps {
   message: string;
@@ -16,7 +16,7 @@ export function useConfirmDialog({
 }: ConfirmDialogProps): [() => JSX.Element, () => Promise<unknown>] {
   const [promise, setPromise] = useState<{ resolve(value: boolean): void } | null>(null);
 
-  function confirm() {
+  function handleOpen() {
     return new Promise((resolve) => {
       setPromise({ resolve });
     });
@@ -36,9 +36,14 @@ export function useConfirmDialog({
     handleClose();
   }
 
+  function onOpenChange() {
+    if (promise === null) handleOpen();
+    else handleCancel();
+  }
+
   function ConfirmationDialog() {
     return (
-      <Dialog open={promise !== null}>
+      <Dialog open={promise !== null} onOpenChange={onOpenChange}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
@@ -64,5 +69,5 @@ export function useConfirmDialog({
     );
   }
 
-  return [ConfirmationDialog, confirm];
+  return [ConfirmationDialog, handleOpen];
 }

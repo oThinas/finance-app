@@ -11,6 +11,7 @@ export function LogoImage(props: LogoImageProps) {
     <Image
       alt="Um conjunto de nove pontos brancos dispostos em um quadrado"
       src="/logo.svg" width={props.width} height={props.height}
+      style={{ width: 'auto', height: 'auto' }}
     />
   );
 }
