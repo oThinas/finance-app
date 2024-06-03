@@ -10,12 +10,12 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/
 import { Input } from '@/components/ui/input';
 
 /** Database */
-import { insertAccountSchema } from '@/db/schema';
+import { insertCategorySchema } from '@/db/schema';
 
-const formSchema = insertAccountSchema.pick({ name: true });
+const formSchema = insertCategorySchema.pick({ name: true });
 type FormValues = z.input<typeof formSchema>;
 
-interface AccountFormProps {
+interface CategoryFormProps {
   onSubmit(values: FormValues): void;
   id?: string;
   defaultValues: FormValues;
@@ -23,7 +23,7 @@ interface AccountFormProps {
   disabled?: boolean;
 }
 
-export function AccountForm(props: AccountFormProps) {
+export function CategoryForm(props: CategoryFormProps) {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: props.defaultValues,
@@ -52,7 +52,7 @@ export function AccountForm(props: AccountFormProps) {
               <FormControl>
                 <Input
                   {...field} autoComplete="off" disabled={props.disabled}
-                  placeholder="e.g. Cash, Bank, Credit Card, etc"
+                  placeholder="e.g. Food, Travel, etc"
                 />
               </FormControl>
             </FormItem>
@@ -60,14 +60,14 @@ export function AccountForm(props: AccountFormProps) {
         />
 
         <Button className="w-full" disabled={props.disabled}>
-          {props.id ? 'Save changes' : 'Create account'}
+          {props.id ? 'Save changes' : 'Create category'}
         </Button>
 
         {!!props.id && (
           <Button variant="outline" type="button" disabled={props.disabled} className="w-full" onClick={handleDelete}>
             <Trash className="mr-2 size-4" />
 
-            Delete account
+            Delete category
           </Button>
         )}
       </form>

@@ -4,33 +4,33 @@ import { z } from 'zod';
 /** Components */
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Skeleton } from '@/components/ui/skeleton';
-import { AccountForm } from '@/features/accounts/components/account-form';
+import { CategoryForm } from '@/features/categories/components/category-form';
 
 /** Hooks */
-import { useDeleteAccount } from '@/hooks/accounts/api/use-delete-account';
-import { useEditAccount } from '@/hooks/accounts/api/use-edit-account';
-import { useGetAccount } from '@/hooks/accounts/api/use-get-account';
-import { useOpenAccountSheet } from '@/hooks/accounts/use-open-account-sheet';
+import { useDeleteCategory } from '@/hooks/categories/api/use-delete-category';
+import { useEditCategory } from '@/hooks/categories/api/use-edit-category';
+import { useGetCategory } from '@/hooks/categories/api/use-get-category';
+import { useOpenCategorySheet } from '@/hooks/categories/use-open-category-sheet';
 import { useConfirmDialog } from '@/hooks/use-confirm-dialog';
 
 /** Database */
-import { insertAccountSchema } from '@/db/schema';
+import { insertCategorySchema } from '@/db/schema';
 
-const formSchema = insertAccountSchema.pick({ name: true });
+const formSchema = insertCategorySchema.pick({ name: true });
 type FormValues = z.input<typeof formSchema>;
 
-export function EditAccountSheet() {
-  const { isOpen, onClose, id } = useOpenAccountSheet();
-  const [ConfirmDialog, confirm] = useConfirmDialog({ message: 'You are about to delete this account' });
+export function EditCategorySheet() {
+  const { isOpen, onClose, id } = useOpenCategorySheet();
+  const [ConfirmDialog, confirm] = useConfirmDialog({ message: 'You are about to delete this category' });
 
-  const accountQuery = useGetAccount(id);
-  const editMutation = useEditAccount(id);
-  const deleteMutation = useDeleteAccount(id);
+  const categoryQuery = useGetCategory(id);
+  const editMutation = useEditCategory(id);
+  const deleteMutation = useDeleteCategory(id);
 
-  const isLoading = accountQuery.isLoading;
+  const isLoading = categoryQuery.isLoading;
   const isPending = editMutation.isPending || deleteMutation.isPending;
 
-  const defaultValues = accountQuery.data ? { name: accountQuery.data.name } : { name: '' };
+  const defaultValues = categoryQuery.data ? { name: categoryQuery.data.name } : { name: '' };
 
   function handleSubmit(values: FormValues) {
     editMutation.mutate(values, {
@@ -57,11 +57,11 @@ export function EditAccountSheet() {
         <SheetContent className="space-y-4">
           <SheetHeader>
             <SheetTitle>
-              Edit Account
+              Edit Category
             </SheetTitle>
 
             <SheetDescription>
-              Edit an existing account.
+              Edit an existing category.
             </SheetDescription>
           </SheetHeader>
 
@@ -72,7 +72,7 @@ export function EditAccountSheet() {
               <Skeleton className="h-7" />
             </div>
           ) : (
-            <AccountForm
+            <CategoryForm
               id={id} disabled={isPending} defaultValues={defaultValues}
               onSubmit={handleSubmit} onDelete={handleDelete}
             />

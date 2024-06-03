@@ -6,7 +6,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '
 import { AccountForm } from '@/features/accounts/components/account-form';
 
 /** Hooks */
-import { useCreateAccount } from '@/hooks/accounts/api/use-create-accounts';
+import { useCreateAccount } from '@/hooks/accounts/api/use-create-account';
 import { useNewAccountSheet } from '@/hooks/accounts/use-new-account-sheet';
 
 /** Database */

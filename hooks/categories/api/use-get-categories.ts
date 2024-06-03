@@ -1,0 +1,23 @@
+/** Core */
+import { useQuery } from '@tanstack/react-query';
+
+/** Libs */
+import { client } from '@/lib/hono';
+
+export function useGetCategories() {
+  const query = useQuery({
+    queryKey: ['categories'],
+    async queryFn() {
+      const response = await client.api.categories.$get();
+      if (!response.ok) {
+        throw new Error('Failed to fetch categories');
+      }
+
+      const { data } = await response.json();
+
+      return data;
+    },
+  });
+
+  return query;
+}

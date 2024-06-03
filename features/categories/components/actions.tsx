@@ -13,8 +13,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 /** Hooks */
-import { useDeleteAccount } from '@/hooks/accounts/api/use-delete-account';
-import { useOpenAccountSheet } from '@/hooks/accounts/use-open-account-sheet';
+import { useDeleteCategory } from '@/hooks/categories/api/use-delete-category';
+import { useOpenCategorySheet } from '@/hooks/categories/use-open-category-sheet';
 import { useConfirmDialog } from '@/hooks/use-confirm-dialog';
 
 interface ActionProps {
@@ -22,9 +22,9 @@ interface ActionProps {
 }
 
 export function Actions(props: ActionProps) {
-  const { onOpen } = useOpenAccountSheet();
-  const deleteMutation = useDeleteAccount(props.id);
-  const [ConfirmDialog, confirm] = useConfirmDialog({ message: 'You are about to delete this account' });
+  const { onOpen } = useOpenCategorySheet();
+  const deleteMutation = useDeleteCategory(props.id);
+  const [ConfirmDialog, confirm] = useConfirmDialog({ message: 'You are about to delete this category' });
 
   const isPending = deleteMutation.isPending;
 

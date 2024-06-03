@@ -1,6 +1,7 @@
 'use client';
 
 /** Core */
+import { Row } from '@tanstack/react-table';
 import { Plus } from 'lucide-react';
 
 /** Components */
@@ -11,37 +12,36 @@ import { LoadSpin } from '@/components/ui/load-spin';
 import { Skeleton } from '@/components/ui/skeleton';
 
 /** Hooks */
-import { useBulkDeleteAccounts } from '@/hooks/accounts/api/use-bulk-delete-accounts';
-import { useGetAccounts } from '@/hooks/accounts/api/use-get-accounts';
-import { useNewAccountSheet } from '@/hooks/accounts/use-new-account-sheet';
+import { useBulkDeleteCategories } from '@/hooks/categories/api/use-bulk-delete-categories';
+import { useGetCategories } from '@/hooks/categories/api/use-get-categories';
+import { useNewCategorySheet } from '@/hooks/categories/use-new-category-sheet';
 
 /** Configs */
-import { accountColumns } from '@/config/account-columns';
-import { Row } from '@tanstack/react-table';
+import { categoryColumns } from '@/config/category-columns';
 
-export default function AccountsPage() {
-  const newAccount = useNewAccountSheet();
+export default function CategoriesPage() {
+  const newCategory = useNewCategorySheet();
 
-  const deleteAccountsQuery = useBulkDeleteAccounts();
-  const getAccountsQuery = useGetAccounts();
+  const deleteCategoriesQuery = useBulkDeleteCategories();
+  const getCategoriesQuery = useGetCategories();
 
-  const accounts = getAccountsQuery.data || [];
-  const isDisabled = getAccountsQuery.isLoading || deleteAccountsQuery.isPending;
+  const categories = getCategoriesQuery.data || [];
+  const isDisabled = getCategoriesQuery.isLoading || deleteCategoriesQuery.isPending;
 
-  function handleNewAccount() {
-    newAccount.onOpen();
+  function handleNewCategory() {
+    newCategory.onOpen();
   }
 
-  function handleDeleteAccounts(rows: Row<{ id: string; name: string }>[]) {
+  function handleDeleteCategories(rows: Row<{ id: string; name: string }>[]) {
     const ids = rows.map((row) => row.original.id);
-    deleteAccountsQuery.mutate({ ids });
+    deleteCategoriesQuery.mutate({ ids });
   }
 
   return (
     <div className="mx-auto -mt-24 w-full max-w-screen-2xl pb-10">
       <Card className="border-none drop-shadow-sm">
         <CardHeader className="gap-y-2 lg:flex-row lg:items-center lg:justify-between">
-          {getAccountsQuery.isLoading ? (
+          {getCategoriesQuery.isLoading ? (
             <>
               <Skeleton className="h-8 w-48" />
 
@@ -50,10 +50,10 @@ export default function AccountsPage() {
           ) : (
             <>
               <CardTitle className="line-clamp-1 text-xl">
-                Accounts
+                Categories
               </CardTitle>
 
-              <Button size="sm" onClick={handleNewAccount}>
+              <Button size="sm" onClick={handleNewCategory}>
                 <Plus className="mr-2 size-4" />
 
                 Add new
@@ -63,14 +63,14 @@ export default function AccountsPage() {
         </CardHeader>
 
         <CardContent>
-          {getAccountsQuery.isLoading ? (
+          {getCategoriesQuery.isLoading ? (
             <div className="flex h-[500px] w-full items-center justify-center">
               <LoadSpin className="size-8 text-slate-300" />
             </div>
           ) : (
             <DataTable
-              columns={accountColumns} data={accounts} filterKey="name" disabled={isDisabled}
-              onDelete={(rows) => handleDeleteAccounts(rows)}
+              columns={categoryColumns} data={categories} filterKey="name" disabled={isDisabled}
+              onDelete={(rows) => handleDeleteCategories(rows)}
             />
           )}
         </CardContent>
