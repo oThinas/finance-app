@@ -10,7 +10,7 @@ type ResponseType = InferResponseType<typeof client.api.accounts[':id']['$delete
 
 export function useDeleteAccount(id?: string) {
   const queryClient = useQueryClient();
-  const mutatation = useMutation<ResponseType, Error>({
+  const mutation = useMutation<ResponseType, Error>({
     async mutationFn() {
       toast.loading('Deleting account...', 'delete-account');
 
@@ -30,5 +30,5 @@ export function useDeleteAccount(id?: string) {
     },
   });
 
-  return mutatation;
+  return mutation;
 }

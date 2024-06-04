@@ -11,7 +11,7 @@ type ResponseType = InferResponseType<typeof client.api.categories.$post>;
 
 export function useCreateCategory() {
   const queryClient = useQueryClient();
-  const mutatation = useMutation<ResponseType, Error, RequestType>({
+  const mutation = useMutation<ResponseType, Error, RequestType>({
     async mutationFn(json) {
       toast.loading('Creating category...', 'create-category');
       const response = await client.api.categories.$post({ json });
@@ -28,5 +28,5 @@ export function useCreateCategory() {
     },
   });
 
-  return mutatation;
+  return mutation;
 }

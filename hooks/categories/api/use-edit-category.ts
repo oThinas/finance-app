@@ -11,7 +11,7 @@ type ResponseType = InferResponseType<typeof client.api.categories[':id']['$patc
 
 export function useEditCategory(id?: string) {
   const queryClient = useQueryClient();
-  const mutatation = useMutation<ResponseType, Error, RequestType>({
+  const mutation = useMutation<ResponseType, Error, RequestType>({
     async mutationFn(json) {
       toast.loading('Updating category...', 'update-category');
 
@@ -34,5 +34,5 @@ export function useEditCategory(id?: string) {
     },
   });
 
-  return mutatation;
+  return mutation;
 }

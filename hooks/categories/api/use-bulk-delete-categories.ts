@@ -11,7 +11,7 @@ type ResponseType = InferResponseType<typeof client.api.categories['bulk-delete'
 
 export function useBulkDeleteCategories() {
   const queryClient = useQueryClient();
-  const mutatation = useMutation<ResponseType, Error, RequestType>({
+  const mutation = useMutation<ResponseType, Error, RequestType>({
     async mutationFn(json) {
       toast.loading('Deleting categories...', 'bulk-delete-categories');
       const response = await client.api.categories['bulk-delete'].$post({ json });
@@ -29,5 +29,5 @@ export function useBulkDeleteCategories() {
     },
   });
 
-  return mutatation;
+  return mutation;
 }

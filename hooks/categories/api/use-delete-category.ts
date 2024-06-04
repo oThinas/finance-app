@@ -10,7 +10,7 @@ type ResponseType = InferResponseType<typeof client.api.categories[':id']['$dele
 
 export function useDeleteCategory(id?: string) {
   const queryClient = useQueryClient();
-  const mutatation = useMutation<ResponseType, Error>({
+  const mutation = useMutation<ResponseType, Error>({
     async mutationFn() {
       toast.loading('Deleting category...', 'delete-category');
 
@@ -30,5 +30,5 @@ export function useDeleteCategory(id?: string) {
     },
   });
 
-  return mutatation;
+  return mutation;
 }

@@ -11,7 +11,7 @@ type ResponseType = InferResponseType<typeof client.api.accounts[':id']['$patch'
 
 export function useEditAccount(id?: string) {
   const queryClient = useQueryClient();
-  const mutatation = useMutation<ResponseType, Error, RequestType>({
+  const mutation = useMutation<ResponseType, Error, RequestType>({
     async mutationFn(json) {
       toast.loading('Updating account...', 'update-account');
 
@@ -19,6 +19,7 @@ export function useEditAccount(id?: string) {
         json,
         param: { id },
       });
+
       const data = await response.json();
 
       return data;
@@ -34,5 +35,5 @@ export function useEditAccount(id?: string) {
     },
   });
 
-  return mutatation;
+  return mutation;
 }

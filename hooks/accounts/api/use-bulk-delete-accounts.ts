@@ -11,7 +11,7 @@ type ResponseType = InferResponseType<typeof client.api.accounts['bulk-delete'][
 
 export function useBulkDeleteAccounts() {
   const queryClient = useQueryClient();
-  const mutatation = useMutation<ResponseType, Error, RequestType>({
+  const mutation = useMutation<ResponseType, Error, RequestType>({
     async mutationFn(json) {
       toast.loading('Deleting accounts...', 'bulk-delete-accounts');
       const response = await client.api.accounts['bulk-delete'].$post({ json });
@@ -29,5 +29,5 @@ export function useBulkDeleteAccounts() {
     },
   });
 
-  return mutatation;
+  return mutation;
 }

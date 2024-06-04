@@ -123,6 +123,29 @@ export const transactionsRoutes = new Hono()
     },
   )
   .post(
+    '/bulk-create',
+    clerkMiddleware(),
+    zValidator('json', z.array(insertTransactionsSchema.omit({ id: true }))),
+    async (context) => {
+      const auth = getAuth(context);
+      if (!auth?.userId) {
+        return context.json({ error: 'Unauthorized' }, 401);
+      }
+
+      const body = context.req.valid('json');
+
+      const data = await db
+        .insert(transactions)
+        .values(body.map((transaction) => ({
+          id: createId(),
+          ...transaction,
+        })))
+        .returning();
+
+      return context.json({ data });
+    },
+  )
+  .post(
     '/bulk-delete',
     clerkMiddleware(),
     zValidator(

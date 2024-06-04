@@ -11,7 +11,7 @@ type ResponseType = InferResponseType<typeof client.api.accounts.$post>;
 
 export function useCreateAccount() {
   const queryClient = useQueryClient();
-  const mutatation = useMutation<ResponseType, Error, RequestType>({
+  const mutation = useMutation<ResponseType, Error, RequestType>({
     async mutationFn(json) {
       toast.loading('Creating account...', 'create-account');
       const response = await client.api.accounts.$post({ json });
@@ -28,5 +28,5 @@ export function useCreateAccount() {
     },
   });
 
-  return mutatation;
+  return mutation;
 }
