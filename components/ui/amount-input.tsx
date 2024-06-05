@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 /** Libs */
-import { parseFloatLocale } from '@/lib/utils';
+import { parseFloatLocale, toFixedLocale } from '@/lib/utils';
 import { forwardRef } from 'react';
 
 interface AmountInputProps {
@@ -27,7 +27,7 @@ export const AmountInput = forwardRef<HTMLInputElement, AmountInputProps>((props
       return;
     }
 
-    const newValue = (parsedValue * -1).toString();
+    const newValue = toFixedLocale(-parsedValue);
     props.onChange(newValue);
   }
 
@@ -59,7 +59,7 @@ export const AmountInput = forwardRef<HTMLInputElement, AmountInputProps>((props
 
       <CurrencyInput
         prefix="R$" placeholder={props.placeholder} value={props.value} decimalScale={2} decimalsLimit={2}
-        onValueChange={props.onChange} disabled={props.disabled} ref={ref}
+        onValueChange={props.onChange} disabled={props.disabled} ref={ref} inputMode="decimal"
         className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 pl-10 text-sm
         ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium
         placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring

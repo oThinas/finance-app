@@ -29,7 +29,7 @@ export function DatePicker(props: DatePickerProps) {
     <Popover modal={true} open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <Button
-          disabled={props.disabled} variant="outline"
+          disabled={props.disabled} variant="outline" tabIndex={0}
           className={cn('w-full justify-start text-left font-normal', !props.value && 'text-muted-foreground')}
         >
           <CalendarIcon className="mr-2 size-4" />

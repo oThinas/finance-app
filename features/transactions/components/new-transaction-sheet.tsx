@@ -60,7 +60,7 @@ export function NewTransactionSheet() {
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="space-y-4">
+      <SheetContent className="space-y-4" tabIndex={-1}>
         <SheetHeader>
           <SheetTitle>
             New Transaction

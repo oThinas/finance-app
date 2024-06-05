@@ -33,7 +33,7 @@ export function Select({
     <CreatableSelect
       {...props}
       placeholder={props.placeholder} className="h-10 text-sm" value={formattedValue} options={options}
-      onCreateOption={props.onCreate} onChange={handleSelectChange} isDisabled={props.disabled}
+      onCreateOption={props.onCreate} onChange={handleSelectChange} isDisabled={props.disabled} blurInputOnSelect
       theme={(theme) => ({
         ...theme,
         spacing: {
@@ -47,11 +47,12 @@ export function Select({
         },
       })}
       styles={{
-        control: (base) => ({
+        control: (base, state) => ({
           ...base,
           cursor: 'pointer',
-          borderColor: '#E2E8F0',
-          '&:hover': { borderColor: '#E2E8F0' },
+          borderColor: '#0F172A',
+          borderWidth: state.isFocused ? 2 : 1,
+          '&:hover': { borderColor: '#0F172A' },
         }),
       }}
     />

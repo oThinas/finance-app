@@ -19,6 +19,10 @@ export function parseFloatLocale(value: string) {
   return parseFloat(value.replace(',', '.'));
 }
 
+export function toFixedLocale(value: number, decimals = 2) {
+  return value.toFixed(decimals).replace('.', ',');
+}
+
 export function convertAmounToMiliunits(amount: number) {
   return Math.round(amount * 1000);
 }
