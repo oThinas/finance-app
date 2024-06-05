@@ -12,36 +12,36 @@ import { LoadSpin } from '@/components/ui/load-spin';
 import { Skeleton } from '@/components/ui/skeleton';
 
 /** Hooks */
-import { useBulkDeleteAccounts } from '@/hooks/accounts/api/use-bulk-delete-accounts';
-import { useGetAccounts } from '@/hooks/accounts/api/use-get-accounts';
-import { useNewAccountSheet } from '@/hooks/accounts/use-new-account-sheet';
+import { accountColumns } from '@/config/account-columns';
+import { useBulkDeleteTransactions } from '@/hooks/transactions/api/use-bulk-delete-transactions';
+import { useGetTransactions } from '@/hooks/transactions/api/use-get-transactions';
+import { useNewTransactionSheet } from '@/hooks/transactions/use-new-transaction-sheet';
 
 /** Configs */
-import { accountColumns } from '@/config/account-columns';
 
-export default function AccountsPage() {
-  const newAccount = useNewAccountSheet();
+export default function TransactionsPage() {
+  const newTransaction = useNewTransactionSheet();
 
-  const deleteAccountsQuery = useBulkDeleteAccounts();
-  const getAccountsQuery = useGetAccounts();
+  const deleteTransactionsQuery = useBulkDeleteTransactions();
+  const getTransactionsQuery = useGetTransactions();
 
-  const accounts = getAccountsQuery.data || [];
-  const isDisabled = getAccountsQuery.isLoading || deleteAccountsQuery.isPending;
+  const transactions = getTransactionsQuery.data || [];
+  const isDisabled = getTransactionsQuery.isLoading || deleteTransactionsQuery.isPending;
 
-  function handleNewAccount() {
-    newAccount.onOpen();
+  function handleNewTransaction() {
+    newTransaction.onOpen();
   }
 
-  function handleDeleteAccounts(rows: Row<{ id: string; name: string }>[]) {
+  function handleDeleteTransactions(rows: Row<{ id: string, name: string }>[]) {
     const ids = rows.map((row) => row.original.id);
-    deleteAccountsQuery.mutate({ ids });
+    deleteTransactionsQuery.mutate({ ids });
   }
 
   return (
     <div className="mx-auto -mt-24 w-full max-w-screen-2xl pb-10">
       <Card className="border-none drop-shadow-sm">
         <CardHeader className="gap-y-2 lg:flex-row lg:items-center lg:justify-between">
-          {getAccountsQuery.isLoading ? (
+          {getTransactionsQuery.isLoading ? (
             <>
               <Skeleton className="h-8 w-48" />
 
@@ -50,10 +50,10 @@ export default function AccountsPage() {
           ) : (
             <>
               <CardTitle className="line-clamp-1 text-xl">
-                Accounts
+                Transaction history
               </CardTitle>
 
-              <Button size="sm" onClick={handleNewAccount}>
+              <Button size="sm" onClick={handleNewTransaction}>
                 <Plus className="mr-2 size-4" />
 
                 Add new
@@ -63,14 +63,14 @@ export default function AccountsPage() {
         </CardHeader>
 
         <CardContent>
-          {getAccountsQuery.isLoading ? (
+          {getTransactionsQuery.isLoading ? (
             <div className="flex h-[500px] w-full items-center justify-center">
               <LoadSpin className="size-8 text-slate-300" />
             </div>
           ) : (
             <DataTable
-              columns={accountColumns} data={accounts} filterKey="name" disabled={isDisabled}
-              onDelete={(rows) => handleDeleteAccounts(rows)}
+              columns={accountColumns} data={transactions} filterKey="name" disabled={isDisabled}
+              onDelete={(rows) => handleDeleteTransactions(rows)}
             />
           )}
         </CardContent>

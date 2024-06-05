@@ -14,3 +14,15 @@ export function dismissButton(label?: string, onClick?: () => void) {
     },
   };
 }
+
+export function parseFloatLocale(value: string) {
+  return parseFloat(value.replace(',', '.'));
+}
+
+export function convertAmounToMiliunits(amount: number) {
+  return Math.round(amount * 1000);
+}
+
+export function convertAmounFromMiliunits(amount: number) {
+  return amount / 1000;
+}

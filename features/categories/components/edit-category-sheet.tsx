@@ -3,7 +3,6 @@ import { z } from 'zod';
 
 /** Components */
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { Skeleton } from '@/components/ui/skeleton';
 import { CategoryForm } from '@/features/categories/components/category-form';
 
 /** Hooks */
@@ -14,6 +13,7 @@ import { useOpenCategorySheet } from '@/hooks/categories/use-open-category-sheet
 import { useConfirmDialog } from '@/hooks/use-confirm-dialog';
 
 /** Database */
+import { SkeletonFormSheet } from '@/components/ui/skeleton-form-sheet';
 import { insertCategorySchema } from '@/db/schema';
 
 const formSchema = insertCategorySchema.pick({ name: true });
@@ -66,11 +66,7 @@ export function EditCategorySheet() {
           </SheetHeader>
 
           {isLoading ? (
-            <div className="flex flex-col gap-2 pt-8">
-              <Skeleton className="h-7 w-1/3" />
-              <Skeleton className="h-7" />
-              <Skeleton className="h-7" />
-            </div>
+            <SkeletonFormSheet />
           ) : (
             <CategoryForm
               id={id} disabled={isPending} defaultValues={defaultValues}

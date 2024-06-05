@@ -28,7 +28,7 @@ export function HeaderNavigation() {
   if (isMobile) {
     return (
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetTrigger>
+        <SheetTrigger asChild>
           <Button
             className="border-none bg-white/10 font-normal text-white outline-none transition hover:bg-white/20
             hover:text-white focus:bg-white/30 focus-visible:ring-transparent focus-visible:ring-offset-0"
