@@ -8,6 +8,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 
 /** Libs */
 import { parseFloatLocale } from '@/lib/utils';
+import { forwardRef } from 'react';
 
 interface AmountInputProps {
   value: string;
@@ -16,7 +17,7 @@ interface AmountInputProps {
   disabled?: boolean;
 }
 
-export function AmountInput(props: AmountInputProps) {
+export const AmountInput = forwardRef<HTMLInputElement, AmountInputProps>((props, ref) => {
   const parsedValue = parseFloatLocale(props.value || '');
   const isIncome = parsedValue > 0;
   const isExpense = parsedValue < 0;
@@ -58,7 +59,7 @@ export function AmountInput(props: AmountInputProps) {
 
       <CurrencyInput
         prefix="R$" placeholder={props.placeholder} value={props.value} decimalScale={2} decimalsLimit={2}
-        onValueChange={props.onChange} disabled={props.disabled}
+        onValueChange={props.onChange} disabled={props.disabled} ref={ref}
         className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 pl-10 text-sm
         ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium
         placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring
@@ -71,4 +72,6 @@ export function AmountInput(props: AmountInputProps) {
       </p>
     </div>
   );
-}
+});
+
+AmountInput.displayName = 'AmountInput';
