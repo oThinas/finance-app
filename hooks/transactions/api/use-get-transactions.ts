@@ -4,6 +4,7 @@ import { useSearchParams } from 'next/navigation';
 
 /** Libs */
 import { client } from '@/lib/hono';
+import { convertAmounFromMiliunits } from '@/lib/utils';
 
 export function useGetTransactions() {
   const params = useSearchParams();
@@ -30,7 +31,10 @@ export function useGetTransactions() {
 
       const { data } = await response.json();
 
-      return data;
+      return data.map((transaction) => ({
+        ...transaction,
+        amount: convertAmounFromMiliunits(transaction.amount),
+      }));
     },
   });
 

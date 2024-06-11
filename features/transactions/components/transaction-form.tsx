@@ -26,7 +26,9 @@ import { ISelectOptions } from '@/interfaces/select-options';
 const formSchema = z.object({
   date: z.coerce.date(),
   accountId: z.string(),
-  categoryId: z.string(),
+  categoryId: z.string()
+    .nullable()
+    .optional(),
   payee: z.string(),
   amount: z.string(),
   notes: z.string()
@@ -106,7 +108,7 @@ export function TransactionForm(props: TransactionFormProps) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel required>
+              <FormLabel>
                 Category
               </FormLabel>
 
@@ -114,7 +116,7 @@ export function TransactionForm(props: TransactionFormProps) {
                 <Select
                   placeholder="Select an category" options={props.categoryOptions} onCreate={props.onCreateCategory}
                   value={field.value as (string & (ISelectOptions | MultiValue<ISelectOptions>)) | null | undefined}
-                  onChange={field.onChange} disabled={props.disabled} required
+                  onChange={field.onChange} disabled={props.disabled}
                 />
               </FormControl>
             </FormItem>

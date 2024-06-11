@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 /** Components */
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { SkeletonFormSheet } from '@/components/ui/skeleton-form-sheet';
 import { AccountForm } from '@/features/accounts/components/account-form';
 
 /** Hooks */
@@ -13,7 +14,6 @@ import { useOpenAccountSheet } from '@/hooks/accounts/use-open-account-sheet';
 import { useConfirmDialog } from '@/hooks/use-confirm-dialog';
 
 /** Database */
-import { SkeletonFormSheet } from '@/components/ui/skeleton-form-sheet';
 import { insertAccountSchema } from '@/db/schema';
 
 const formSchema = insertAccountSchema.pick({ name: true });

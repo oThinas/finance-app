@@ -1,14 +1,14 @@
 /** Core */
 import { create } from 'zustand';
 
-interface NewTransactionSheetState {
+interface OpenTransactionSheetState {
   id?: string;
   isOpen: boolean;
   onOpen(id: string): void;
   onClose(): void;
 }
 
-export const useNewTransactionSheet = create<NewTransactionSheetState>((set) => ({
+export const useOpenTransactionSheet = create<OpenTransactionSheetState>((set) => ({
   id: undefined,
   isOpen: false,
   onOpen(id: string) {

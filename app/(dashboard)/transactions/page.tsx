@@ -12,12 +12,12 @@ import { LoadSpin } from '@/components/ui/load-spin';
 import { Skeleton } from '@/components/ui/skeleton';
 
 /** Hooks */
-import { accountColumns } from '@/config/account-columns';
 import { useBulkDeleteTransactions } from '@/hooks/transactions/api/use-bulk-delete-transactions';
 import { useGetTransactions } from '@/hooks/transactions/api/use-get-transactions';
 import { useNewTransactionSheet } from '@/hooks/transactions/use-new-transaction-sheet';
 
 /** Configs */
+import { ResponseType, transactionsColumns } from '@/config/transaction-column';
 
 export default function TransactionsPage() {
   const newTransaction = useNewTransactionSheet();
@@ -32,7 +32,7 @@ export default function TransactionsPage() {
     newTransaction.onOpen();
   }
 
-  function handleDeleteTransactions(rows: Row<{ id: string, name: string }>[]) {
+  function handleDeleteTransactions(rows: Row<ResponseType>[]) {
     const ids = rows.map((row) => row.original.id);
     deleteTransactionsQuery.mutate({ ids });
   }
@@ -69,7 +69,7 @@ export default function TransactionsPage() {
             </div>
           ) : (
             <DataTable
-              columns={accountColumns} data={transactions} filterKey="name" disabled={isDisabled}
+              columns={transactionsColumns} data={transactions} filterKey="payee" disabled={isDisabled}
               onDelete={(rows) => handleDeleteTransactions(rows)}
             />
           )}

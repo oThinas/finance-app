@@ -30,3 +30,12 @@ export function convertAmounToMiliunits(amount: number) {
 export function convertAmounFromMiliunits(amount: number) {
   return amount / 1000;
 }
+
+export function formatCurrency(value: number) {
+  return Intl
+    .NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    })
+    .format(value);
+}
