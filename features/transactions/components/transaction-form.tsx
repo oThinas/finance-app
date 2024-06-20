@@ -8,10 +8,10 @@ import { z } from 'zod';
 /** Components */
 import { AmountInput } from '@/components/ui/amount-input';
 import { Button } from '@/components/ui/button';
+import { CreatableSelect } from '@/components/ui/creatable-select';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 
 /** Database */
@@ -93,7 +93,7 @@ export function TransactionForm(props: TransactionFormProps) {
               </FormLabel>
 
               <FormControl>
-                <Select
+                <CreatableSelect
                   placeholder="Select an account" options={props.accountOptions} onCreate={props.onCreateAccount}
                   value={field.value as (string & (ISelectOptions | MultiValue<ISelectOptions>)) | null | undefined}
                   onChange={field.onChange} disabled={props.disabled} required
@@ -113,7 +113,7 @@ export function TransactionForm(props: TransactionFormProps) {
               </FormLabel>
 
               <FormControl>
-                <Select
+                <CreatableSelect
                   placeholder="Select an category" options={props.categoryOptions} onCreate={props.onCreateCategory}
                   value={field.value as (string & (ISelectOptions | MultiValue<ISelectOptions>)) | null | undefined}
                   onChange={field.onChange} disabled={props.disabled}

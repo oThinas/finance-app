@@ -3,13 +3,15 @@
 /** Core */
 import { Row } from '@tanstack/react-table';
 import { Plus } from 'lucide-react';
+import { useState } from 'react';
 
 /** Components */
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DataTable } from '@/components/ui/data-table';
 import { LoadSpin } from '@/components/ui/load-spin';
-import { Skeleton } from '@/components/ui/skeleton';
+import { PageCard } from '@/components/ui/page-card';
+import { ImportCard } from '@/features/transactions/components/import-card';
+import { UploadButton } from '@/features/transactions/components/upload-button';
 
 /** Hooks */
 import { useBulkDeleteTransactions } from '@/hooks/transactions/api/use-bulk-delete-transactions';
@@ -19,7 +21,21 @@ import { useNewTransactionSheet } from '@/hooks/transactions/use-new-transaction
 /** Configs */
 import { ResponseType, transactionsColumns } from '@/config/transaction-column';
 
+enum VARIANTS {
+  LIST = 'LIST',
+  IMPORT = 'IMPORT',
+}
+
+const INITIAL_IMPORT_RESULTS = {
+  data: [],
+  errors: [],
+  meta: {},
+};
+
 export default function TransactionsPage() {
+  const [variant, setVariant] = useState<VARIANTS>(VARIANTS.LIST);
+  const [importResults, setImportResults] = useState(INITIAL_IMPORT_RESULTS);
+
   const newTransaction = useNewTransactionSheet();
 
   const deleteTransactionsQuery = useBulkDeleteTransactions();
@@ -37,44 +53,50 @@ export default function TransactionsPage() {
     deleteTransactionsQuery.mutate({ ids });
   }
 
+  function handleUpload(results: typeof INITIAL_IMPORT_RESULTS) {
+    console.log('results: ', results);
+    setImportResults(results);
+    setVariant(VARIANTS.IMPORT);
+  }
+
+  function handleCancelImports() {
+    setImportResults(INITIAL_IMPORT_RESULTS);
+    setVariant(VARIANTS.LIST);
+  }
+
+  if (variant === VARIANTS.IMPORT) {
+    return (
+      <>
+        <ImportCard data={importResults.data} onCancel={handleCancelImports} onSubmit={() => { }} />
+      </>
+    );
+  }
+
   return (
-    <div className="mx-auto -mt-24 w-full max-w-screen-2xl pb-10">
-      <Card className="border-none drop-shadow-sm">
-        <CardHeader className="gap-y-2 lg:flex-row lg:items-center lg:justify-between">
-          {getTransactionsQuery.isLoading ? (
-            <>
-              <Skeleton className="h-8 w-48" />
+    <PageCard
+      title="Transaction history"
+      isLoading={getTransactionsQuery.isLoading}
+      loadingContent={(
+        <div className="flex h-[500px] w-full items-center justify-center">
+          <LoadSpin className="size-8 text-slate-300" />
+        </div>
+      )}
+      header={(
+        <>
+          <Button size="sm" className="w-full lg:w-auto" onClick={handleNewTransaction}>
+            <Plus className="mr-2 size-4" />
 
-              <Skeleton className="h-8 w-24" />
-            </>
-          ) : (
-            <>
-              <CardTitle className="line-clamp-1 text-xl">
-                Transaction history
-              </CardTitle>
+            Add new
+          </Button>
 
-              <Button size="sm" onClick={handleNewTransaction}>
-                <Plus className="mr-2 size-4" />
-
-                Add new
-              </Button>
-            </>
-          )}
-        </CardHeader>
-
-        <CardContent>
-          {getTransactionsQuery.isLoading ? (
-            <div className="flex h-[500px] w-full items-center justify-center">
-              <LoadSpin className="size-8 text-slate-300" />
-            </div>
-          ) : (
-            <DataTable
-              columns={transactionsColumns} data={transactions} filterKey="payee" disabled={isDisabled}
-              onDelete={(rows) => handleDeleteTransactions(rows)}
-            />
-          )}
-        </CardContent>
-      </Card>
-    </div>
+          <UploadButton onUpload={handleUpload} />
+        </>
+      )}
+    >
+      <DataTable
+        columns={transactionsColumns} data={transactions} filterKey="payee" disabled={isDisabled}
+        onDelete={(rows) => handleDeleteTransactions(rows)}
+      />
+    </PageCard>
   );
 }
