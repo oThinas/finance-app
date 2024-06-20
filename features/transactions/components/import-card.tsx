@@ -76,10 +76,6 @@ export function ImportCard(props: ImportCartProps) {
       date: format(parse(row.date!, dateFormat, new Date()), outputFormat),
     }));
 
-    console.log('1 mappedData: ', mappedData);
-    console.log('2 arrayData: ', arrayData);
-    console.log('3 formattedData: ', formattedData);
-
     props.onSubmit(formattedData);
   }
 

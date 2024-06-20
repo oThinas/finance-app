@@ -14,12 +14,20 @@ import { ImportCard } from '@/features/transactions/components/import-card';
 import { UploadButton } from '@/features/transactions/components/upload-button';
 
 /** Hooks */
+import { useSelectAccount } from '@/hooks/accounts/use-select-account';
+import { useBulkCreateTransactions } from '@/hooks/transactions/api/use-bulk-create-transactions';
 import { useBulkDeleteTransactions } from '@/hooks/transactions/api/use-bulk-delete-transactions';
 import { useGetTransactions } from '@/hooks/transactions/api/use-get-transactions';
 import { useNewTransactionSheet } from '@/hooks/transactions/use-new-transaction-sheet';
 
+/** Libs */
+import { toast } from '@/lib/toast';
+
 /** Configs */
 import { ResponseType, transactionsColumns } from '@/config/transaction-column';
+
+/** Database */
+import { transactions as transactionsSchema } from '@/db/schema';
 
 enum VARIANTS {
   LIST = 'LIST',
@@ -33,10 +41,12 @@ const INITIAL_IMPORT_RESULTS = {
 };
 
 export default function TransactionsPage() {
+  const [AccountDialog, confirm] = useSelectAccount();
   const [variant, setVariant] = useState<VARIANTS>(VARIANTS.LIST);
   const [importResults, setImportResults] = useState(INITIAL_IMPORT_RESULTS);
 
   const newTransaction = useNewTransactionSheet();
+  const bulkCreateTransactions = useBulkCreateTransactions();
 
   const deleteTransactionsQuery = useBulkDeleteTransactions();
   const getTransactionsQuery = useGetTransactions();
@@ -54,20 +64,39 @@ export default function TransactionsPage() {
   }
 
   function handleUpload(results: typeof INITIAL_IMPORT_RESULTS) {
-    console.log('results: ', results);
     setImportResults(results);
     setVariant(VARIANTS.IMPORT);
   }
 
-  function handleCancelImports() {
+  function handleCancelImport() {
     setImportResults(INITIAL_IMPORT_RESULTS);
     setVariant(VARIANTS.LIST);
+  }
+
+  async function handleSubmitImport(values: typeof transactionsSchema.$inferInsert[]) {
+    const accountId = await confirm();
+    if (!accountId) {
+      return toast.error('Please select an account to continue');
+    }
+
+    const data = values.map((value) => ({
+      ...value,
+      accountId: accountId as string,
+    }));
+
+    bulkCreateTransactions.mutate(data, {
+      onSuccess() {
+        handleCancelImport();
+      },
+    });
   }
 
   if (variant === VARIANTS.IMPORT) {
     return (
       <>
-        <ImportCard data={importResults.data} onCancel={handleCancelImports} onSubmit={() => { }} />
+        <AccountDialog />
+
+        <ImportCard data={importResults.data} onCancel={handleCancelImport} onSubmit={handleSubmitImport} />
       </>
     );
   }

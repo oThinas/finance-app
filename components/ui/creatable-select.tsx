@@ -47,12 +47,9 @@ export function CreatableSelect({
         },
       })}
       styles={{
-        control: (base, state) => ({
+        control: (base) => ({
           ...base,
           cursor: 'pointer',
-          borderColor: '#0F172A',
-          borderWidth: state.isFocused ? 2 : 1,
-          '&:hover': { borderColor: '#0F172A' },
         }),
       }}
     />
