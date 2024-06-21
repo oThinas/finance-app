@@ -52,7 +52,7 @@ export const AmountInput = forwardRef<HTMLInputElement, AmountInputProps>((props
           </TooltipTrigger>
 
           <TooltipContent>
-            Use [+] for income and [-] for expenses
+            Use [+] for income and [-] for expense
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

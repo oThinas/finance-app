@@ -19,7 +19,6 @@ import { useConfirmDialog } from '@/hooks/use-confirm-dialog';
 
 /** Database */
 import { insertTransactionsSchema } from '@/db/schema';
-import { convertAmounFromMiliunits } from '@/lib/utils';
 
 const formSchema = insertTransactionsSchema.omit({ id: true });
 type FormValues = z.input<typeof formSchema>;
@@ -57,7 +56,7 @@ export function EditTransactionSheet() {
   const defaultValues = transactionQuery.data ? {
     accountId: transactionQuery.data.accountId,
     categoryId: transactionQuery.data.categoryId,
-    amount: convertAmounFromMiliunits(transactionQuery.data.amount).toString(),
+    amount: transactionQuery.data.amount.toString(),
     date: transactionQuery.data.date ? new Date(transactionQuery.data.date) : new Date(),
     payee: transactionQuery.data.payee,
     notes: transactionQuery.data.notes,

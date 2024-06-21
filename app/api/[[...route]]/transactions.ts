@@ -173,7 +173,7 @@ export const transactionsRoutes = new Hono()
       const data = await db
         .with(transactionsToDelete)
         .delete(transactions)
-        .where(inArray(transactions.id, sql`(select id from ${transactionsToDelete})`))
+        .where(inArray(transactions.id, sql`(SELECT id FROM ${transactionsToDelete})`))
         .returning({ id: transactions.id });
 
       return context.json({ data });
@@ -212,7 +212,7 @@ export const transactionsRoutes = new Hono()
         .with(transactionsToUpdate)
         .update(transactions)
         .set(body)
-        .where(inArray(transactions.id, sql`(select id from ${transactionsToUpdate})`))
+        .where(inArray(transactions.id, sql`(SElECT id FROM ${transactionsToUpdate})`))
         .returning();
 
       if (!data) {
@@ -251,7 +251,7 @@ export const transactionsRoutes = new Hono()
       const [data] = await db
         .with(transactionsToDelete)
         .delete(transactions)
-        .where(inArray(transactions.id, sql`(select id from ${transactionsToDelete})`))
+        .where(inArray(transactions.id, sql`(SELECT id FROM ${transactionsToDelete})`))
         .returning({ id: transactions.id });
 
       if (!data) {
